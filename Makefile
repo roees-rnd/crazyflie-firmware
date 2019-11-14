@@ -45,6 +45,8 @@ POWER_DISTRIBUTION ?= stock
 RTOS_DEBUG        ?= 0
 
 LIB = $(CRAZYFLIE_BASE)/src/lib
+
+
 FREERTOS = $(CRAZYFLIE_BASE)/src/lib/FreeRTOS
 
 
@@ -127,6 +129,11 @@ VPATH += $(CRAZYFLIE_BASE)/src/init $(CRAZYFLIE_BASE)/src/hal/src $(CRAZYFLIE_BA
 
 # Init
 PROJ_OBJ += main.o
+PROJ_OBJ += abs.c abscissas2endPoints.c addToMap.c batchSplitFit.c correctBlockEkf.c correctKnownLmksExperiment.c createLandmarks.c createObservations.c CyclicBuffer_addPos.c CyclicBuffer_addPos_data.c CyclicBuffer_addPos_initialize.c CyclicBuffer_addPos_rtwutil.c
+PROJ_OBJ += CyclicBuffer_addPos_terminate.c CyclicBuffer_addProx.c CyclicBuffer_addPsi.c CyclicBuffer_addPsi_initialize.c CyclicBuffer_addPsi_terminate.c det.c diff.c epNom2epNew.c extractFeaturesWorld.c filter.c filtfilt.c getMaxPenDist.c getMetry.c initCyclicBuffer.c
+PROJ_OBJ += initNewLmkExperiment.c initRobots.c initSlam.c interp1.c lp2d.c matchFeatureExperiment.c mean.c mldivide.c mod1.c mod.c motion.c newLmk.c norm.c power.c predictBlockEkf.c processSlamInput.c projAbscissas2World.c projectLmk.c projHorEndPntsToHorLin.c projRhoPhiAlpha2World.c
+PROJ_OBJ += propagateUncertainty.c refreshMapCntlUnit.c retroProjXYFromRangeSenOnRob.c rtGetInf.c rtGetNaN.c rt_nonfinite.c SaM.c sign.c slamOnVehicle.c sort1.c sortIdx.c sqrt.c stepBetweenSync.c sum.c upSampAndFilt_AttPos.c
+
 PROJ_OBJ += platform.o platform_utils.o platform_$(PLATFORM).o platform_$(CPU).o
 
 # Drivers
@@ -275,6 +282,7 @@ INCLUDES += -I$(CRAZYFLIE_BASE)/src/deck/interface -I$(CRAZYFLIE_BASE)/src/deck/
 INCLUDES += -I$(CRAZYFLIE_BASE)/src/utils/interface/clockCorrection
 INCLUDES += -I$(CRAZYFLIE_BASE)/src/utils/interface/tdoa
 INCLUDES += -I$(CRAZYFLIE_BASE)/src/utils/interface/lighthouse
+INCLUDES += -I$(CRAZYFLIE_BASE)/src/modules/src
 INCLUDES += -I$(CRAZYFLIE_BASE)/vendor/libdw1000/inc
 INCLUDES += -I$(LIB)/FatFS
 INCLUDES += -I$(LIB)/vl53l1
