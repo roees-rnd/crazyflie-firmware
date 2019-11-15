@@ -6,6 +6,8 @@
  */
 
 /* Include Files */
+#include "mtlb_filter.h"
+
 #include "rt_nonfinite.h"
 #include "CyclicBuffer_addPos.h"
 #include "CyclicBuffer_addProx.h"
@@ -14,7 +16,6 @@
 #include "slamOnVehicle.h"
 #include "stepBetweenSync.h"
 #include "upSampAndFilt_AttPos.h"
-#include "filter.h"
 
 /* Function Definitions */
 
@@ -25,7 +26,7 @@
  *                double b_y[124]
  * Return Type  : void
  */
-void filter(double b[11], const double b_x[124], const double zi[10], double
+void mtlb_filter(double b[11], const double b_x[124], const double zi[10], double
             b_y[124])
 {
   int k;

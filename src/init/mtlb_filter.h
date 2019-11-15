@@ -5,8 +5,8 @@
  * C/C++ source code generated on  : 13-Nov-2019 15:25:03
  */
 
-#ifndef FILTER_H
-#define FILTER_H
+#ifndef MTLB_FILTER_H
+#define MTLB_FILTER_H
 
 /* Include Files */
 #include <math.h>
@@ -25,7 +25,7 @@ extern "C" {
 
 #endif
 
-  extern void filter(double b[11], const double b_x[124], const double zi[10],
+  extern void mtlb_filter(double b[11], const double b_x[124], const double zi[10],
                      double b_y[124]);
 
 #ifdef __cplusplus

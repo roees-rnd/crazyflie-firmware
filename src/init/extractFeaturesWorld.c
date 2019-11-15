@@ -17,7 +17,6 @@
 #include "extractFeaturesWorld.h"
 #include "sqrt.h"
 #include "sum.h"
-#include "power.h"
 #include "diff.h"
 #include "abs.h"
 #include "sign.h"
@@ -29,6 +28,7 @@
 #include "projRhoPhiAlpha2World.h"
 #include "batchSplitFit.h"
 #include "CyclicBuffer_addPos_rtwutil.h"
+#include "mtlb_power.h"
 
 /* Function Definitions */
 

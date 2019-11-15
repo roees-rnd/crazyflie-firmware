@@ -5,8 +5,8 @@
  * C/C++ source code generated on  : 13-Nov-2019 15:25:03
  */
 
-#ifndef POWER_H
-#define POWER_H
+#ifndef MTLB_POWER_H
+#define MTLB_POWER_H
 
 /* Include Files */
 #include <math.h>
@@ -27,7 +27,7 @@ extern "C" {
 
   extern void b_power(const double a[2], double b_y[2]);
   extern void c_power(const double a[2], double b_y[2]);
-  extern void power(const double a[398], double b_y[398]);
+  extern void mtlb_power(const double a[398], double b_y[398]);
 
 #ifdef __cplusplus
 

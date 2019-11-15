@@ -30,7 +30,7 @@
  *                Rob_type *Rob
  * Return Type  : void
  */
-void initRobots(struct0_T *Map, Rob_type *Rob)
+void initRobots(Map_type *Map, Rob_type *Rob)
 {
   int i;
   boolean_T b_x[33];

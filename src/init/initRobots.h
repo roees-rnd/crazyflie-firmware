@@ -25,7 +25,7 @@ extern "C" {
 
 #endif
 
-  extern void initRobots(struct0_T *Map, Rob_type *Rob);
+  extern void initRobots(Map_type *Map, Rob_type *Rob);
 
 #ifdef __cplusplus
 

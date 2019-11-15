@@ -15,7 +15,8 @@
 #include "stepBetweenSync.h"
 #include "upSampAndFilt_AttPos.h"
 #include "filtfilt.h"
-#include "filter.h"
+
+#include "mtlb_filter.h"
 
 /* Function Definitions */
 
@@ -53,7 +54,7 @@ void filtfilt(const double x_in[64], double y_out[64])
   }
 
   memcpy(&c_y[0], &b_y[0], 124U * sizeof(double));
-  filter(dv13, c_y, dv14, b_y);
+  mtlb_filter(dv13, c_y, dv14, b_y);
   for (i = 0; i < 62; i++) {
     xtmp = b_y[i];
     b_y[i] = b_y[123 - i];
@@ -69,7 +70,7 @@ void filtfilt(const double x_in[64], double y_out[64])
   }
 
   memcpy(&c_y[0], &b_y[0], 124U * sizeof(double));
-  filter(dv13, c_y, dv14, b_y);
+  mtlb_filter(dv13, c_y, dv14, b_y);
   for (i = 0; i < 62; i++) {
     xtmp = b_y[i];
     b_y[i] = b_y[123 - i];

@@ -129,10 +129,10 @@ VPATH += $(CRAZYFLIE_BASE)/src/init $(CRAZYFLIE_BASE)/src/hal/src $(CRAZYFLIE_BA
 
 # Init
 PROJ_OBJ += main.o
-PROJ_OBJ += abs.c abscissas2endPoints.c addToMap.c batchSplitFit.c correctBlockEkf.c correctKnownLmksExperiment.c createLandmarks.c createObservations.c CyclicBuffer_addPos.c CyclicBuffer_addPos_data.c CyclicBuffer_addPos_initialize.c CyclicBuffer_addPos_rtwutil.c
-PROJ_OBJ += CyclicBuffer_addPos_terminate.c CyclicBuffer_addProx.c CyclicBuffer_addPsi.c CyclicBuffer_addPsi_initialize.c CyclicBuffer_addPsi_terminate.c det.c diff.c epNom2epNew.c extractFeaturesWorld.c filter.c filtfilt.c getMaxPenDist.c getMetry.c initCyclicBuffer.c
-PROJ_OBJ += initNewLmkExperiment.c initRobots.c initSlam.c interp1.c lp2d.c matchFeatureExperiment.c mean.c mldivide.c mod1.c mod.c motion.c newLmk.c norm.c power.c predictBlockEkf.c processSlamInput.c projAbscissas2World.c projectLmk.c projHorEndPntsToHorLin.c projRhoPhiAlpha2World.c
-PROJ_OBJ += propagateUncertainty.c refreshMapCntlUnit.c retroProjXYFromRangeSenOnRob.c rtGetInf.c rtGetNaN.c rt_nonfinite.c SaM.c sign.c slamOnVehicle.c sort1.c sortIdx.c sqrt.c stepBetweenSync.c sum.c upSampAndFilt_AttPos.c
+PROJ_OBJ += abs.o abscissas2endPoints.o addToMap.o batchSplitFit.o correctBlockEkf.o correctKnownLmksExperiment.o createLandmarks.o createObservations.o CyclicBuffer_addPos.o CyclicBuffer_addPos_data.o CyclicBuffer_addPos_initialize.o CyclicBuffer_addPos_rtwutil.o
+PROJ_OBJ += CyclicBuffer_addPos_terminate.o CyclicBuffer_addProx.o CyclicBuffer_addPsi.o CyclicBuffer_addPsi_initialize.o CyclicBuffer_addPsi_terminate.o det.o diff.o epNom2epNew.o extractFeaturesWorld.o mtlb_filter.o filtfilt.o getMaxPenDist.o getMetry.o initCyclicBuffer.o
+PROJ_OBJ += initNewLmkExperiment.o initRobots.o initSlam.o interp1.o lp2d.o matchFeatureExperiment.o mean.o mldivide.o mod1.o mod.o motion.o newLmk.o norm.o mtlb_power.o predictBlockEkf.o processSlamInput.o projAbscissas2World.o projectLmk.o projHorEndPntsToHorLin.o projRhoPhiAlpha2World.o
+PROJ_OBJ += propagateUncertainty.o refreshMapCntlUnit.o retroProjXYFromRangeSenOnRob.o rtGetInf.o rtGetNaN.o rt_nonfinite.o SaM.o sign.o slamOnVehicle.o sort1.o sortIdx.o sqrt.o stepBetweenSync.o sum.o upSampAndFilt_AttPos.o
 
 PROJ_OBJ += platform.o platform_utils.o platform_$(PLATFORM).o platform_$(CPU).o
 
@@ -273,6 +273,7 @@ INCLUDES += -I$(FREERTOS)/include -I$(PORT) -I$(CRAZYFLIE_BASE)/src
 INCLUDES += -I$(CRAZYFLIE_BASE)/src/config -I$(CRAZYFLIE_BASE)/src/hal/interface -I$(CRAZYFLIE_BASE)/src/modules/interface
 INCLUDES += -I$(CRAZYFLIE_BASE)/src/utils/interface -I$(CRAZYFLIE_BASE)/src/drivers/interface -I$(CRAZYFLIE_BASE)/src/platform
 INCLUDES += -I$(CRAZYFLIE_BASE)/vendor/CMSIS/CMSIS/Include -I$(CRAZYFLIE_BASE)/src/drivers/bosch/interface
+INCLUDES += -I$(CRAZYFLIE_BASE)/src/slam
 
 INCLUDES += -I$(LIB)/STM32F4xx_StdPeriph_Driver/inc
 INCLUDES += -I$(LIB)/CMSIS/STM32F4xx/Include

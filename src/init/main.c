@@ -29,7 +29,7 @@
 //
 // Created by makeruser on 7/22/19.
 //
-#include "../slam/initSlam.h"
+#include "initSlam.h"
 #include "stdio.h"
 #include "CyclicBuffer_addProx.h"
 #include "initCyclicBuffer.h"

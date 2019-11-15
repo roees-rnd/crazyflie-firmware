@@ -18,12 +18,12 @@
 #include "getMaxPenDist.h"
 #include "sqrt.h"
 #include "sum.h"
-#include "power.h"
 #include "diff.h"
 #include "SaM.h"
 #include "sort1.h"
 #include "mod.h"
 #include "mod1.h"
+#include "mtlb_power.h"
 
 /* Function Declarations */
 static void calcRhoTta(const double X[2], double rhoTta[2], double J[4]);
@@ -362,7 +362,7 @@ void b_batchSplitFit(const double orig[3], const double Points[400], double pnum
     }
 
     diff(b_Points_c, dv4);
-    power(dv4, dv5);
+    mtlb_power(dv4, dv5);
     b_sum(dv5, d);
     c_sqrt(d);
     for (i = 0; i < (int)(pnum - 1.0); i++) {
@@ -844,7 +844,7 @@ void batchSplitFit(const double orig[3], const double Points[400], double pnum,
     }
 
     diff(b_Points_c, dv1);
-    power(dv1, dv2);
+    mtlb_power(dv1, dv2);
     b_sum(dv2, d);
     c_sqrt(d);
     for (i = 0; i < (int)(pnum - 1.0); i++) {
