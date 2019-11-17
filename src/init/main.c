@@ -41,7 +41,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
-
+#include "ff.h"  // for reading files
+#include "debug.h"
 /* Personal configs */
 #include "FreeRTOSConfig.h"
 
@@ -67,36 +68,61 @@
 
 #define MAX 300
 
+static FIL fid_sequence;
+static FIL fid_cbaprox_ins;
+static FIL fid_cbapos_ins;
+static FIL fid_cbapsi_ins;
+static FIL fid_initPose;
 
-int main (int argc, char *argv[])
+static FIL fid_cbaprox_outs;
+static FIL fid_cbapos_outs;
+static FIL fid_cbapsi_outs;
+static FIL fid_stpbsync_outs;
+static FIL fid_usafap_outs;
+static FIL fid_sov_outs;
+static FIL fid_timing;
+
+#include "cfassert.h"
+#include "sleepus.h"
+static FATFS FatFs;
+
+
+int main ()
 {
+	int err = platformInit();
+	if (err != 0) {
+		// The firmware is running on the wrong hardware. Halt
+		while(1);
+	}
 
-    FILE * fid_sequence;
-    FILE * fid_cbaprox_ins;
-    FILE * fid_cbapos_ins;
-    FILE * fid_cbapsi_ins;
-    FILE * fid_initPose;
+	//Launch the system task that will initialize and start everything
+	systemLaunch();
 
-    FILE * fid_cbaprox_outs;
-    FILE * fid_cbapos_outs;
-    FILE * fid_cbapsi_outs;
-    FILE * fid_stpbsync_outs;
-    FILE * fid_usafap_outs;
-    FILE * fid_sov_outs;
+	//Start the FreeRTOS scheduler
+	vTaskStartScheduler();
+
+	//TODO: Move to platform launch failed
+	ledInit();
+	ledSet(0, 1);
+	ledSet(1, 1);
+
+
+	DEBUG_PRINT("running main function!");
+
     int stepNum = 1;
 
-    char buf[MAX];
-    char buf2[MAX];
-    char * tmpAgrIn1;
-    char * tmpAgrIn2;
-    char * tmpAgrIn3;
-    char * tmpAgrIn4;
-    char * tmpAgrIn5;
-    char * tmpAgrIn6;
+    TCHAR buf[MAX];
+    TCHAR buf2[MAX];
+    TCHAR * tmpAgrIn1;
+    TCHAR * tmpAgrIn2;
+    TCHAR * tmpAgrIn3;
+    TCHAR * tmpAgrIn4;
+    TCHAR * tmpAgrIn5;
+    TCHAR * tmpAgrIn6;
     const char sep[2] = ",";
 
     // initSlam inputs:
-    char setupType[7];
+    TCHAR setupType[7];
     Map_type Map;
     Rob_type Rob;
     Sen_type Sen[17];
@@ -147,9 +173,19 @@ int main (int argc, char *argv[])
     initSlam(setupType, &Map, &Rob,Sen,  Lmk,  Obs,  &Opt, Raw, xyRob, &pnum);
     initCyclicBuffer(&psiBuff, &xyBuff, proxBuff, &OptSync);
 
+    /* try to mount drives before creating the tasks */
+	if (f_mount(&FatFs, "", 1) == FR_OK) {
+		DEBUG_PRINT("mount SD-Card [OK].\n");
+	}else{
+		while (true){
+			DEBUG_PRINT("mount SD-Card [FAIL].\n");
+		}
+	}
+
+
     // Load initial Position and update states:
-    fid_initPose = fopen("/home/bitcraze/projects/crazyflie-firmware/src/slam/unitTestFiles/initial_pose.txt","r");
-    fgets(buf, MAX, fid_initPose);
+    f_open(&fid_initPose, "initial_pose.txt",FA_READ);
+    f_gets(buf, MAX, &fid_initPose);
     tmpAgrIn1 = strtok(buf, sep);
     tmpAgrIn2 = strtok(NULL, sep);
     tmpAgrIn3 = strtok(NULL, sep);
@@ -159,35 +195,38 @@ int main (int argc, char *argv[])
     Rob.state.x[0]=Map.x[0];
     Rob.state.x[1]=Map.x[1];
     Rob.state.x[2]=Map.x[2];
-    fclose(fid_initPose);
+    f_close(&fid_initPose);
 
     initUsecTimer();
 
 
     // Open input files:
-    fid_sequence =      fopen ("/home/bitcraze/projects/crazyflie-firmware/src/slam/unitTestFiles/fid_sequence_log.txt", "r");
-    fid_cbaprox_ins =   fopen("/home/bitcraze/projects/crazyflie-firmware/src/slam/unitTestFiles/cbaProx_ins.txt","r");
-    fid_cbapos_ins =    fopen("/home/bitcraze/projects/crazyflie-firmware/src/slam/unitTestFiles/cbaPos_ins.txt","r");
-    fid_cbapsi_ins =    fopen("/home/bitcraze/projects/crazyflie-firmware/src/slam/unitTestFiles/cbaPsi_ins.txt","r");
+    f_open (&fid_sequence, "fid_sequence_log.txt", FA_READ);
+    f_open(&fid_cbaprox_ins, "cbaProx_ins.txt",FA_READ);
+    f_open(&fid_cbapos_ins, "cbaPos_ins.txt",FA_READ);
+    f_open(&fid_cbapsi_ins, "cbaPsi_ins.txt",FA_READ);
 
     // Prepare output files:
-    fid_cbaprox_outs =  fopen("/home/bitcraze/projects/crazyflie-firmware/src/slam/unitTestFiles/cbaProx_outs_new.txt","w");
-    fid_cbapos_outs =   fopen("/home/bitcraze/projects/crazyflie-firmware/src/slam/unitTestFiles/cbaPos_outs_new.txt","w");
-    fid_cbapsi_outs =   fopen("/home/bitcraze/projects/crazyflie-firmware/src/slam/unitTestFiles/cbaPsi_outs_new.txt","w");
-    fid_stpbsync_outs = fopen("/home/bitcraze/projects/crazyflie-firmware/src/slam/unitTestFiles/stepBsync_outs_new.txt","w");
-    fid_usafap_outs =   fopen("/home/bitcraze/projects/crazyflie-firmware/src/slam/unitTestFiles/usafap_outs_new.txt","w");
-    fid_sov_outs =      fopen("/home/bitcraze/projects/crazyflie-firmware/src/slam/unitTestFiles/sov_outs_new.txt","w");
+    f_open(&fid_cbaprox_outs, "cbaProx_outs_new.txt",FA_WRITE);
+    f_open(&fid_cbapos_outs, "cbaPos_outs_new.txt",FA_WRITE);
+    f_open(&fid_cbapsi_outs, "cbaPsi_outs_new.txt",FA_WRITE);
+    f_open(&fid_stpbsync_outs, "stepBsync_outs_new.txt",FA_WRITE);
+    f_open(&fid_usafap_outs, "usafap_outs_new.txt",FA_WRITE);
+    f_open(&fid_sov_outs, "sov_outs_new.txt",FA_WRITE);
+
+    f_open(&fid_timing, "sov_outs_new.txt",FA_WRITE);
 
 
-    // fprintf(fid_sequence, "%s %s %s %d", "We", "are", "in", 2019);
+
+    // f_printf(&fid_sequence, "%s %s %s %d", "We", "are", "in", 2019);
 
 
-    while (!feof(fid_sequence)) {
-        fgets(buf, MAX, fid_sequence);
+    while (!f_eof(&fid_sequence)) {
+    	f_gets(buf, MAX, &fid_sequence);
 
         if (strstr(buf, "CyclicBuffer_addProx") != NULL) {
-            fgets(buf2, MAX, fid_cbaprox_ins);
-            tmpAgrIn1 = strtok(buf2, sep);if (tmpAgrIn1 == NULL) {break;}
+            f_gets(buf2, MAX, &fid_cbaprox_ins);
+            tmpAgrIn1 = strtok((char *)buf2, sep);if (tmpAgrIn1 == NULL) {break;}
             tmpAgrIn2 = strtok(NULL, sep);if (tmpAgrIn2 == NULL) {break;}
             tmpAgrIn3 = strtok(NULL, sep);if (tmpAgrIn3 == NULL) {break;}
             tmpAgrIn4 = strtok(NULL, sep);if (tmpAgrIn4 == NULL) {break;}
@@ -196,8 +235,8 @@ int main (int argc, char *argv[])
             CyclicBuffer_addProx(proxBuff, atof(tmpAgrIn2), atof(tmpAgrIn3), atof(tmpAgrIn4), atof(tmpAgrIn5),
                                  &OptSync);
         } else if (strstr(buf, "CyclicBuffer_addPos") != NULL) {
-            fgets(buf2, MAX, fid_cbapos_ins);
-            tmpAgrIn1 = strtok(buf2, sep);if (tmpAgrIn1 == NULL) {break;}
+            f_gets(buf2, MAX, &fid_cbapos_ins);
+            tmpAgrIn1 = strtok((char *)buf2, sep);if (tmpAgrIn1 == NULL) {break;}
             tmpAgrIn2 = strtok(NULL, sep);if (tmpAgrIn2 == NULL) {break;}
             tmpAgrIn3 = strtok(NULL, sep);if (tmpAgrIn3 == NULL) {break;}
             tmpAgrIn4 = strtok(NULL, sep);if (tmpAgrIn4 == NULL) {break;}
@@ -211,8 +250,8 @@ int main (int argc, char *argv[])
             CyclicBuffer_addPos(&xyBuff, atof(tmpAgrIn2), xyIn, atof(tmpAgrIn5), atof(tmpAgrIn6),
                                  &OptSync);
         } else if (strstr(buf, "CyclicBuffer_addPsi") != NULL) {
-            fgets(buf2, MAX, fid_cbapsi_ins);
-            tmpAgrIn1 = strtok(buf2, sep);if (tmpAgrIn1 == NULL) {break;}
+            f_gets(buf2, MAX, &fid_cbapsi_ins);
+            tmpAgrIn1 = strtok((char *)buf2, sep);if (tmpAgrIn1 == NULL) {break;}
             tmpAgrIn2 = strtok(NULL, sep);if (tmpAgrIn2 == NULL) {break;}
             tmpAgrIn3 = strtok(NULL, sep);if (tmpAgrIn3 == NULL) {break;}
             tmpAgrIn4 = strtok(NULL, sep);if (tmpAgrIn4 == NULL) {break;}
@@ -228,24 +267,24 @@ int main (int argc, char *argv[])
             //                          double xUpSamp_f[64], double yUpSamp_f[64], double attUpSamp_f[64])
             upSampAndFilt_AttPos(&psiBuff, &xyBuff, &OptSync, &shortTimeStep, highFreqTimeGrid, &wantedSyncTime_T0,
                                  &wantedSyncTime_T1, xUpSamp_f, yUpSamp_f, attUpSamp_f);
-            fprintf(fid_usafap_outs, "%d, ", stepNum);
-            fprintf(fid_usafap_outs, "%d, ",shortTimeStep);
+            f_printf(&fid_usafap_outs, "%d, ", stepNum);
+            f_printf(&fid_usafap_outs, "%d, ",shortTimeStep);
             for( int i=0; i<64; i++) {
-                fprintf(fid_usafap_outs, "%d, ", (int)highFreqTimeGrid[i]);
+                f_printf(&fid_usafap_outs, "%d, ", (int)highFreqTimeGrid[i]);
             }
-            fprintf(fid_usafap_outs, "%d, ",(int)wantedSyncTime_T0);
-            fprintf(fid_usafap_outs, "%d, ",(int)wantedSyncTime_T1);
+            f_printf(&fid_usafap_outs, "%d, ",(int)wantedSyncTime_T0);
+            f_printf(&fid_usafap_outs, "%d, ",(int)wantedSyncTime_T1);
 
             for( int i=0; i<64; i++) {
-                fprintf(fid_usafap_outs, "%.16f, ", xUpSamp_f[i]);
+                f_printf(&fid_usafap_outs, "%.16f, ", xUpSamp_f[i]);
             }
             for( int i=0; i<64; i++) {
-                fprintf(fid_usafap_outs, "%.16f, ", yUpSamp_f[i]);
+                f_printf(&fid_usafap_outs, "%.16f, ", yUpSamp_f[i]);
             }
             for( int i=0; i<64; i++) {
-                fprintf(fid_usafap_outs, "%.16f, ", attUpSamp_f[i]);
+                f_printf(&fid_usafap_outs, "%.16f, ", attUpSamp_f[i]);
             }
-            fprintf(fid_usafap_outs, "\n");
+            f_printf(&fid_usafap_outs, "\n");
         } else if (strstr(buf, "stepBetweenSync") != NULL) {
             //printf("step between sync\n");
             //void stepBetweenSync(const proxBuff_type proxBuff[16], const double
@@ -258,20 +297,20 @@ int main (int argc, char *argv[])
             stepBetweenSync(proxBuff, highFreqTimeGrid, wantedSyncTime_T0, wantedSyncTime_T1,
                     xUpSamp_f, yUpSamp_f, attUpSamp_f, &OptSync, &done, &RobTT, RobXYT, RobCov, &prox);
 
-            fprintf(fid_stpbsync_outs, "%d, ", (int)stepNum);
-            fprintf(fid_stpbsync_outs, "%d, ",(int)done);
-            fprintf(fid_stpbsync_outs, "%d, ",(int)RobTT);
-            fprintf(fid_stpbsync_outs, "%.16f, ",RobXYT[0]);
-            fprintf(fid_stpbsync_outs, "%.16f, ",RobXYT[1]);
-            fprintf(fid_stpbsync_outs, "%.16f, ",RobXYT[2]);
+            f_printf(&fid_stpbsync_outs, "%d, ", (int)stepNum);
+            f_printf(&fid_stpbsync_outs, "%d, ",(int)done);
+            f_printf(&fid_stpbsync_outs, "%d, ",(int)RobTT);
+            f_printf(&fid_stpbsync_outs, "%.16f, ",RobXYT[0]);
+            f_printf(&fid_stpbsync_outs, "%.16f, ",RobXYT[1]);
+            f_printf(&fid_stpbsync_outs, "%.16f, ",RobXYT[2]);
             for (int i=0; i<9; i++) {
-                fprintf(fid_stpbsync_outs, "%.16f, ", RobCov[i]);
+                f_printf(&fid_stpbsync_outs, "%.16f, ", RobCov[i]);
             }
             for (int i=0; i<16; i++) {
-                fprintf(fid_stpbsync_outs, "%.16f, ", prox.TT[i]);
-                fprintf(fid_stpbsync_outs, "%.16f, ", prox.val[i]);
+                f_printf(&fid_stpbsync_outs, "%.16f, ", prox.TT[i]);
+                f_printf(&fid_stpbsync_outs, "%.16f, ", prox.val[i]);
             }
-            fprintf(fid_stpbsync_outs, "\n");
+            f_printf(&fid_stpbsync_outs, "\n");
 
 
         } else if (strstr(buf, "slamOnVehicle") != NULL) {
@@ -290,41 +329,47 @@ int main (int argc, char *argv[])
             end_time[num_clks]=usecTimestamp();
             isLowFreqCyc[num_clks] = LowFreqCycle;
             num_clks++;
-            fprintf(fid_sov_outs, "%d, ", stepNum);
-            fprintf(fid_sov_outs, "%d, ", LowFreqCycle);
-            fprintf(fid_sov_outs, "%.16f, %.16f, %.16f, ",RobPoseUpd[0],RobPoseUpd[1],RobPoseUpd[2]);
+            f_printf(&fid_sov_outs, "%d, ", stepNum);
+            f_printf(&fid_sov_outs, "%d, ", LowFreqCycle);
+            f_printf(&fid_sov_outs, "%.16f, %.16f, %.16f, ",RobPoseUpd[0],RobPoseUpd[1],RobPoseUpd[2]);
             for (int i=0; i<9; i++) {
-                fprintf(fid_sov_outs, "%.16f, ", RobCovUpd[i]);
+                f_printf(&fid_sov_outs, "%.16f, ", RobCovUpd[i]);
             }
-            fprintf(fid_sov_outs, "\n");
+            f_printf(&fid_sov_outs, "\n");
 
         } else {
-            assert(false);
+            ASSERT(false);
         }
         stepNum++;
         // printf("string is: %s\n", buf);
 
 
     }
-    fclose(fid_sequence);
-    fclose(fid_cbaprox_ins);
-    fclose(fid_cbapos_ins);
-    fclose(fid_cbapsi_ins);
+    f_close(&fid_sequence);
+    f_close(&fid_cbaprox_ins);
+    f_close(&fid_cbapos_ins);
+    f_close(&fid_cbapsi_ins);
 
-    fclose(fid_cbaprox_outs);
-    fclose(fid_cbapos_outs);
-    fclose(fid_cbapsi_outs);
-    fclose(fid_stpbsync_outs);
-    fclose(fid_usafap_outs);
-    fclose(fid_sov_outs);
+    f_close(&fid_cbaprox_outs);
+    f_close(&fid_cbapos_outs);
+    f_close(&fid_cbapsi_outs);
+    f_close(&fid_stpbsync_outs);
+    f_close(&fid_usafap_outs);
+    f_close(&fid_sov_outs);
 
     for (int i=0; i<num_clks; i++){
-        printf("dtime=%f", 1000*(double)(end_time[i]-begin_time[i]));
+        f_printf(&fid_timing, "dtime=%f", 1000*(double)(end_time[i]-begin_time[i]));
         if (isLowFreqCyc[i]) {
-            printf(" ---\n");
+            f_printf(&fid_timing, " ---\n");
         }else{
-            printf("\n");
+            f_printf(&fid_timing, "\n");
         }
+    }
+    f_close(&fid_timing);
+
+    DEBUG_PRINT("Done unit-test\n");
+    while (true){
+    	sleepus(1000);
     }
 
     return 0;
