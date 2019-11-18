@@ -2,24 +2,23 @@
  * File: correctKnownLmksExperiment.c
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 /* Include Files */
-#include "../modules/src/correctKnownLmksExperiment.h"
-
-#include "../modules/src/correctBlockEkf.h"
-#include "../modules/src/CyclicBuffer_addPos.h"
-#include "../modules/src/CyclicBuffer_addProx.h"
-#include "../modules/src/initCyclicBuffer.h"
-#include "../modules/src/initSlam.h"
-#include "../modules/src/matchFeatureExperiment.h"
-#include "../modules/src/projectLmk.h"
-#include "../modules/src/projHorEndPntsToHorLin.h"
-#include "../modules/src/rt_nonfinite.h"
-#include "../modules/src/slamOnVehicle.h"
-#include "../modules/src/stepBetweenSync.h"
-#include "../modules/src/upSampAndFilt_AttPos.h"
+#include "rt_nonfinite.h"
+#include "CyclicBuffer_addPos.h"
+#include "CyclicBuffer_addProx.h"
+#include "initCyclicBuffer.h"
+#include "initSlam.h"
+#include "slamOnVehicle.h"
+#include "stepBetweenSync.h"
+#include "upSampAndFilt_AttPos.h"
+#include "correctKnownLmksExperiment.h"
+#include "projHorEndPntsToHorLin.h"
+#include "correctBlockEkf.h"
+#include "matchFeatureExperiment.h"
+#include "projectLmk.h"
 
 /* Function Definitions */
 
@@ -146,8 +145,8 @@ double correctKnownLmksExperiment(Map_type *Map, Rob_type *Rob, const Sen_type
   /*  covariances */
   for (i = 0; i < 3; i++) {
     for (visInd_i = 0; visInd_i < 3; visInd_i++) {
-      c_Map[visInd_i + 3 * i] = Map->P[((int)Rob->state.r[visInd_i] + 303 *
-        ((int)Rob->state.r[i] - 1)) - 1];
+      c_Map[visInd_i + 3 * i] = Map->P[((int)Rob->state.r[visInd_i] + 33 * ((int)
+        Rob->state.r[i] - 1)) - 1];
     }
   }
 
@@ -340,7 +339,7 @@ double correctKnownLmksExperiment(Map_type *Map, Rob_type *Rob, const Sen_type
       /*  covariances */
       for (i = 0; i < 3; i++) {
         for (visInd_i = 0; visInd_i < 3; visInd_i++) {
-          c_Map[visInd_i + 3 * i] = Map->P[((int)Rob->state.r[visInd_i] + 303 *
+          c_Map[visInd_i + 3 * i] = Map->P[((int)Rob->state.r[visInd_i] + 33 *
             ((int)Rob->state.r[i] - 1)) - 1];
         }
       }

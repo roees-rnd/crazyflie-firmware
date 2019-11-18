@@ -1,23 +1,22 @@
 /*
- * File: filter.h
+ * File: mtlb_filter.h
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
-#ifndef MTLB_FILTER_H
-#define MTLB_FILTER_H
+#ifndef FILTER_H
+#define FILTER_H
 
 /* Include Files */
 #include <math.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "../modules/src/CyclicBuffer_addPos_types.h"
-#include "../modules/src/rt_defines.h"
-#include "../modules/src/rt_nonfinite.h"
-#include "../modules/src/rtwtypes.h"
+#include "rt_defines.h"
+#include "rt_nonfinite.h"
+#include "rtwtypes.h"
+#include "CyclicBuffer_addPos_types.h"
 
 /* Function Declarations */
 #ifdef __cplusplus
@@ -36,7 +35,7 @@ extern "C" {
 #endif
 
 /*
- * File trailer for filter.h
+ * File trailer for mtlb_filter.h
  *
  * [EOF]
  */

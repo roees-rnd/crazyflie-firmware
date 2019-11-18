@@ -2,20 +2,19 @@
  * File: predictBlockEkf.c
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 /* Include Files */
-#include "../modules/src/predictBlockEkf.h"
-
-#include "../modules/src/CyclicBuffer_addPos.h"
-#include "../modules/src/CyclicBuffer_addProx.h"
-#include "../modules/src/initCyclicBuffer.h"
-#include "../modules/src/initSlam.h"
-#include "../modules/src/rt_nonfinite.h"
-#include "../modules/src/slamOnVehicle.h"
-#include "../modules/src/stepBetweenSync.h"
-#include "../modules/src/upSampAndFilt_AttPos.h"
+#include "rt_nonfinite.h"
+#include "CyclicBuffer_addPos.h"
+#include "CyclicBuffer_addProx.h"
+#include "initCyclicBuffer.h"
+#include "initSlam.h"
+#include "slamOnVehicle.h"
+#include "stepBetweenSync.h"
+#include "upSampAndFilt_AttPos.h"
+#include "predictBlockEkf.h"
 
 /* Function Definitions */
 
@@ -55,32 +54,32 @@ void predictBlockEkf(Map_type *Map, const double b_r[3], const double F_r[9],
     /*  update m which does not include 'r' (only mixed rob-lmk coefficients and not rob-rob coeffs). */
     if (Map->used[(int)b_jj - 1]) {
       for (i23 = 0; i23 < 3; i23++) {
-        c_Map[i23] = Map->P[((int)b_r[i23] + 303 * ((int)b_jj - 1)) - 1] +
-          Map->P[((int)b_jj + 303 * ((int)b_r[i23] - 1)) - 1];
+        c_Map[i23] = Map->P[((int)b_r[i23] + 33 * ((int)b_jj - 1)) - 1] + Map->
+          P[((int)b_jj + 33 * ((int)b_r[i23] - 1)) - 1];
       }
 
       for (i23 = 0; i23 < 3; i23++) {
-        Map->P[((int)b_r[i23] + 303 * ((int)b_jj - 1)) - 1] = 0.0;
+        Map->P[((int)b_r[i23] + 33 * ((int)b_jj - 1)) - 1] = 0.0;
         for (i24 = 0; i24 < 3; i24++) {
-          Map->P[((int)b_r[i23] + 303 * ((int)b_jj - 1)) - 1] += 0.5 * F_r[i23 +
+          Map->P[((int)b_r[i23] + 33 * ((int)b_jj - 1)) - 1] += 0.5 * F_r[i23 +
             3 * i24] * c_Map[i24];
         }
       }
 
       for (i23 = 0; i23 < 3; i23++) {
-        c_Map[i23] = Map->P[((int)b_r[i23] + 303 * ((int)b_jj - 1)) - 1];
+        c_Map[i23] = Map->P[((int)b_r[i23] + 33 * ((int)b_jj - 1)) - 1];
       }
 
       for (i23 = 0; i23 < 3; i23++) {
-        Map->P[((int)b_jj + 303 * ((int)b_r[i23] - 1)) - 1] = c_Map[i23];
+        Map->P[((int)b_jj + 33 * ((int)b_r[i23] - 1)) - 1] = c_Map[i23];
       }
     }
   }
 
   for (i22 = 0; i22 < 3; i22++) {
     for (i23 = 0; i23 < 3; i23++) {
-      b_Map[i23 + 3 * i22] = Map->P[((int)b_r[i23] + 303 * ((int)b_r[i22] - 1))
-        - 1];
+      b_Map[i23 + 3 * i22] = Map->P[((int)b_r[i23] + 33 * ((int)b_r[i22] - 1)) -
+        1];
     }
   }
 
@@ -106,7 +105,7 @@ void predictBlockEkf(Map_type *Map, const double b_r[3], const double F_r[9],
 
   for (i22 = 0; i22 < 3; i22++) {
     for (i23 = 0; i23 < 3; i23++) {
-      Map->P[((int)b_r[i23] + 303 * ((int)b_r[i22] - 1)) - 1] = c_F_r[i23 + 3 *
+      Map->P[((int)b_r[i23] + 33 * ((int)b_r[i22] - 1)) - 1] = c_F_r[i23 + 3 *
         i22] + c_F_u[i23 + 3 * i22];
     }
   }
@@ -114,14 +113,14 @@ void predictBlockEkf(Map_type *Map, const double b_r[3], const double F_r[9],
   /*  update the rob-rob coeffs. */
   for (i22 = 0; i22 < 3; i22++) {
     for (i23 = 0; i23 < 3; i23++) {
-      b_Map[i23 + 3 * i22] = 0.5 * (Map->P[((int)b_r[i23] + 303 * ((int)b_r[i22]
-        - 1)) - 1] + Map->P[((int)b_r[i22] + 303 * ((int)b_r[i23] - 1)) - 1]);
+      b_Map[i23 + 3 * i22] = 0.5 * (Map->P[((int)b_r[i23] + 33 * ((int)b_r[i22]
+        - 1)) - 1] + Map->P[((int)b_r[i22] + 33 * ((int)b_r[i23] - 1)) - 1]);
     }
   }
 
   for (i22 = 0; i22 < 3; i22++) {
     for (i23 = 0; i23 < 3; i23++) {
-      Map->P[((int)b_r[i23] + 303 * ((int)b_r[i22] - 1)) - 1] = b_Map[i23 + 3 *
+      Map->P[((int)b_r[i23] + 33 * ((int)b_r[i22] - 1)) - 1] = b_Map[i23 + 3 *
         i22];
     }
   }

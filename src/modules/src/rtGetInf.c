@@ -2,14 +2,14 @@
  * File: rtGetInf.c
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 /*
  * Abstract:
  *       MATLAB for code generation function to initialize non-finite, Inf and MinusInf
  */
-#include "../modules/src/rtGetInf.h"
+#include "rtGetInf.h"
 #define NumBitsPerChar                 8U
 
 /* Function: rtGetInf ==================================================

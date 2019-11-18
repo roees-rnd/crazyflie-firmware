@@ -34,7 +34,7 @@
 #include "app.h"
 
 #ifndef APP_STACKSIZE
-#define APP_STACKSIZE 1000
+#define APP_STACKSIZE 500
 #endif
 
 #ifndef APP_PRIORITY
@@ -168,7 +168,7 @@ void appMain()
     double LmkIds[20];
     double LmkEndps[80];
     double LmkActions[20];
-    struct1_T Metry;
+    struct0_T Metry;
 
     uint64_t begin_time;
     uint64_t end_time;

@@ -2,28 +2,27 @@
  * File: initNewLmkExperiment.c
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 /* Include Files */
-#include "../modules/src/initNewLmkExperiment.h"
-
-#include "../modules/src/addToMap.h"
-#include "../modules/src/CyclicBuffer_addPos.h"
-#include "../modules/src/CyclicBuffer_addPos_data.h"
-#include "../modules/src/CyclicBuffer_addProx.h"
-#include "../modules/src/det.h"
-#include "../modules/src/initCyclicBuffer.h"
-#include "../modules/src/initSlam.h"
-#include "../modules/src/newLmk.h"
-#include "../modules/src/propagateUncertainty.h"
-#include "../modules/src/rt_nonfinite.h"
-#include "../modules/src/slamOnVehicle.h"
-#include "../modules/src/stepBetweenSync.h"
-#include "../modules/src/upSampAndFilt_AttPos.h"
+#include "rt_nonfinite.h"
+#include "CyclicBuffer_addPos.h"
+#include "CyclicBuffer_addProx.h"
+#include "initCyclicBuffer.h"
+#include "initSlam.h"
+#include "slamOnVehicle.h"
+#include "stepBetweenSync.h"
+#include "upSampAndFilt_AttPos.h"
+#include "initNewLmkExperiment.h"
+#include "addToMap.h"
+#include "newLmk.h"
+#include "det.h"
+#include "propagateUncertainty.h"
+#include "CyclicBuffer_addPos_data.h"
 
 /* Function Declarations */
-static void getPlx(double P_LX[66], double usedInd[33], const double Map_P[91809],
+static void getPlx(double P_LX[66], double usedInd[33], const double Map_P[1089],
                    double Map_numUsed, double Map_lmk0, const Lmk_type Lmk[15],
                    double Rob_state_size, const double Rob_state_r[3], const
                    double Jac_Wpos[6]);
@@ -33,7 +32,7 @@ static void getPlx(double P_LX[66], double usedInd[33], const double Map_P[91809
 /*
  * Arguments    : double P_LX[66]
  *                double usedInd[33]
- *                const double Map_P[91809]
+ *                const double Map_P[1089]
  *                double Map_numUsed
  *                double Map_lmk0
  *                const Lmk_type Lmk[15]
@@ -42,7 +41,7 @@ static void getPlx(double P_LX[66], double usedInd[33], const double Map_P[91809
  *                const double Jac_Wpos[6]
  * Return Type  : void
  */
-static void getPlx(double P_LX[66], double usedInd[33], const double Map_P[91809],
+static void getPlx(double P_LX[66], double usedInd[33], const double Map_P[1089],
                    double Map_numUsed, double Map_lmk0, const Lmk_type Lmk[15],
                    double Rob_state_size, const double Rob_state_r[3], const
                    double Jac_Wpos[6])
@@ -62,7 +61,7 @@ static void getPlx(double P_LX[66], double usedInd[33], const double Map_P[91809
     }
 
     for (i32 = 0; i32 < 3; i32++) {
-      b_Map_P[i32] = Map_P[((int)Rob_state_r[i32] + 303 * ii) - 1];
+      b_Map_P[i32] = Map_P[((int)Rob_state_r[i32] + 33 * ii) - 1];
     }
 
     for (i32 = 0; i32 < 2; i32++) {
@@ -89,7 +88,7 @@ static void getPlx(double P_LX[66], double usedInd[33], const double Map_P[91809
       }
 
       for (i32 = 0; i32 < 3; i32++) {
-        b_Map_P[i32] = Map_P[((int)Rob_state_r[i32] + 303 * ((int)Lmk[(int)
+        b_Map_P[i32] = Map_P[((int)Rob_state_r[i32] + 33 * ((int)Lmk[(int)
           indLmkUsed - 1].state.r[0] - 1)) - 1];
       }
 
@@ -107,7 +106,7 @@ static void getPlx(double P_LX[66], double usedInd[33], const double Map_P[91809
       }
 
       for (i32 = 0; i32 < 3; i32++) {
-        b_Map_P[i32] = Map_P[((int)Rob_state_r[i32] + 303 * ((int)Lmk[(int)
+        b_Map_P[i32] = Map_P[((int)Rob_state_r[i32] + 33 * ((int)Lmk[(int)
           indLmkUsed - 1].state.r[1] - 1)) - 1];
       }
 
@@ -242,7 +241,7 @@ double initNewLmkExperiment(Map_type *Map, double Rob_state_size, const double
   for (i = 0; i < 3; i++) {
     Rob_state_x[i] = Map->x[(int)Rob_state_r[i] - 1];
     for (noMatch = 0; noMatch < 3; noMatch++) {
-      Rob_state_P[noMatch + 3 * i] = Map->P[((int)Rob_state_r[noMatch] + 303 *
+      Rob_state_P[noMatch + 3 * i] = Map->P[((int)Rob_state_r[noMatch] + 33 *
         ((int)Rob_state_r[i] - 1)) - 1];
     }
   }
@@ -382,7 +381,7 @@ double initNewLmkExperiment(Map_type *Map, double Rob_state_size, const double
             b_Raw += b_Jac_Wpos[i + (i30 << 1)] * Jac_Wpos[noMatch + (i30 << 1)];
           }
 
-          c_Map[i + (noMatch << 1)] = Map->P[((int)b_r[i] + 303 * ((int)
+          c_Map[i + (noMatch << 1)] = Map->P[((int)b_r[i] + 33 * ((int)
             b_r[noMatch] - 1)) - 1] + b_Raw;
         }
       }

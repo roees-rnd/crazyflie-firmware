@@ -2,29 +2,28 @@
  * File: batchSplitFit.c
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 /* Include Files */
-#include "../modules/src/batchSplitFit.h"
-
-#include "../modules/src/CyclicBuffer_addPos.h"
-#include "../modules/src/CyclicBuffer_addProx.h"
-#include "../modules/src/diff.h"
-#include "../modules/src/getMaxPenDist.h"
-#include "../modules/src/initCyclicBuffer.h"
-#include "../modules/src/initSlam.h"
-#include "../modules/src/mod.h"
-#include "../modules/src/mod1.h"
-#include "../modules/src/mtlb_power.h"
-#include "../modules/src/rt_nonfinite.h"
-#include "../modules/src/slamOnVehicle.h"
-#include "../modules/src/sort1.h"
-#include "../modules/src/sqrt.h"
-#include "../modules/src/stepBetweenSync.h"
-#include "../modules/src/sum.h"
-#include "../modules/src/SaM.h"
-#include "../modules/src/upSampAndFilt_AttPos.h"
+#include "rt_nonfinite.h"
+#include "CyclicBuffer_addPos.h"
+#include "CyclicBuffer_addProx.h"
+#include "initCyclicBuffer.h"
+#include "initSlam.h"
+#include "slamOnVehicle.h"
+#include "stepBetweenSync.h"
+#include "upSampAndFilt_AttPos.h"
+#include "batchSplitFit.h"
+#include "getMaxPenDist.h"
+#include "sqrt.h"
+#include "sum.h"
+#include "mtlb_power.h"
+#include "diff.h"
+#include "SaM.h"
+#include "sort1.h"
+#include "mod.h"
+#include "mod1.h"
 
 /* Function Declarations */
 static void calcRhoTta(const double X[2], double rhoTta[2], double J[4]);
@@ -404,7 +403,7 @@ void b_batchSplitFit(const double orig[3], const double Points[400], double pnum
           }
 
           b_diff(c, b_z);
-          b_power(b_z, dv6);
+          b_mtlb_power(b_z, dv6);
           maxDiff1 = d_sum(dv6);
           b_sqrt(&maxDiff1);
           if (maxDiff1 < Opt_splitFit_MIN_SEG_LEN) {
@@ -886,7 +885,7 @@ void batchSplitFit(const double orig[3], const double Points[400], double pnum,
           }
 
           b_diff(c, b_z);
-          b_power(b_z, dv3);
+          b_mtlb_power(b_z, dv3);
           maxDiff1 = d_sum(dv3);
           b_sqrt(&maxDiff1);
           if (maxDiff1 < Opt_splitFit_MIN_SEG_LEN) {

@@ -2,14 +2,13 @@
  * File: CyclicBuffer_addPsi_initialize.c
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:26:10
+ * C/C++ source code generated on  : 18-Nov-2019 16:30:18
  */
 
 /* Include Files */
-#include "../modules/src/CyclicBuffer_addPsi_initialize.h"
-
-#include "../modules/src/CyclicBuffer_addPsi.h"
-#include "../modules/src/rt_nonfinite.h"
+#include "rt_nonfinite.h"
+#include "CyclicBuffer_addPsi.h"
+#include "CyclicBuffer_addPsi_initialize.h"
 
 /* Function Definitions */
 

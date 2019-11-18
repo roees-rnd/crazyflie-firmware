@@ -1,22 +1,20 @@
 /*
- * File: power.c
+ * File: mtlb_power.c
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 /* Include Files */
 #include "rt_nonfinite.h"
-#include "../modules/src/mtlb_power.h"
-
-#include "../modules/src/CyclicBuffer_addPos.h"
-#include "../modules/src/CyclicBuffer_addProx.h"
-#include "../modules/src/initCyclicBuffer.h"
-#include "../modules/src/initSlam.h"
-#include "../modules/src/rt_nonfinite.h"
-#include "../modules/src/slamOnVehicle.h"
-#include "../modules/src/stepBetweenSync.h"
-#include "../modules/src/upSampAndFilt_AttPos.h"
+#include "CyclicBuffer_addPos.h"
+#include "CyclicBuffer_addProx.h"
+#include "initCyclicBuffer.h"
+#include "initSlam.h"
+#include "slamOnVehicle.h"
+#include "stepBetweenSync.h"
+#include "upSampAndFilt_AttPos.h"
+#include "mtlb_power.h"
 
 /* Function Definitions */
 
@@ -25,7 +23,7 @@
  *                double b_y[2]
  * Return Type  : void
  */
-void b_power(const double a[2], double b_y[2])
+void b_mtlb_power(const double a[2], double b_y[2])
 {
   int k;
   for (k = 0; k < 2; k++) {
@@ -38,7 +36,7 @@ void b_power(const double a[2], double b_y[2])
  *                double b_y[2]
  * Return Type  : void
  */
-void c_power(const double a[2], double b_y[2])
+void c_mtlb_power(const double a[2], double b_y[2])
 {
   int k;
   for (k = 0; k < 2; k++) {
@@ -60,7 +58,7 @@ void mtlb_power(const double a[398], double b_y[398])
 }
 
 /*
- * File trailer for power.c
+ * File trailer for mtlb_power.c
  *
  * [EOF]
  */

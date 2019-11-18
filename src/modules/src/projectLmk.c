@@ -2,21 +2,20 @@
  * File: projectLmk.c
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 /* Include Files */
-#include "../modules/src/projectLmk.h"
-
-#include "../modules/src/CyclicBuffer_addPos.h"
-#include "../modules/src/CyclicBuffer_addProx.h"
-#include "../modules/src/initCyclicBuffer.h"
-#include "../modules/src/initSlam.h"
-#include "../modules/src/norm.h"
-#include "../modules/src/rt_nonfinite.h"
-#include "../modules/src/slamOnVehicle.h"
-#include "../modules/src/stepBetweenSync.h"
-#include "../modules/src/upSampAndFilt_AttPos.h"
+#include "rt_nonfinite.h"
+#include "CyclicBuffer_addPos.h"
+#include "CyclicBuffer_addProx.h"
+#include "initCyclicBuffer.h"
+#include "initSlam.h"
+#include "slamOnVehicle.h"
+#include "stepBetweenSync.h"
+#include "upSampAndFilt_AttPos.h"
+#include "projectLmk.h"
+#include "norm.h"
 
 /* Function Definitions */
 
@@ -42,8 +41,8 @@
  *        .Jac.E_l    % Jacobian wrt landmark state
  *
  *    See also OBSERVEKNOWNLMKS.
- * Arguments    : const double Map_x[303]
- *                const double Map_P[91809]
+ * Arguments    : const double Map_x[33]
+ *                const double Map_P[1089]
  *                const double Rob_state_x[3]
  *                const double Rob_state_r[3]
  *                const char b_Sen_type[7]
@@ -61,7 +60,7 @@
  *                double Opt_maxDistVis
  * Return Type  : void
  */
-void projectLmk(const double Map_x[303], const double Map_P[91809], const double
+void projectLmk(const double Map_x[33], const double Map_P[1089], const double
                 Rob_state_x[3], const double Rob_state_r[3], const char
                 b_Sen_type[7], double Sen_par_maxRange, const char b_Lmk_type[6],
                 const double Lmk_state_r[2], const double Lmk_parEndp_t[2],
@@ -391,7 +390,7 @@ void projectLmk(const double Map_x[303], const double Map_P[91809], const double
     for (i = 0; i < 2; i++) {
       rslr[i + 3] = Lmk_state_r[i];
       for (i28 = 0; i28 < 2; i28++) {
-        b_Map_P[i28 + (i << 1)] = Map_P[((int)Lmk_state_r[i28] + 303 * ((int)
+        b_Map_P[i28 + (i << 1)] = Map_P[((int)Lmk_state_r[i28] + 33 * ((int)
           Lmk_state_r[i] - 1)) - 1];
       }
     }
@@ -427,7 +426,7 @@ void projectLmk(const double Map_x[303], const double Map_P[91809], const double
     memcpy(&Obs->exp.E[0], &b_E[0], 9U * sizeof(double));
     for (i28 = 0; i28 < 5; i28++) {
       for (i = 0; i < 5; i++) {
-        Obs->exp.E_rl_jpd[i + 5 * i28] = Map_P[((int)rslr[i] + 303 * ((int)
+        Obs->exp.E_rl_jpd[i + 5 * i28] = Map_P[((int)rslr[i] + 33 * ((int)
           rslr[i28] - 1)) - 1];
       }
     }

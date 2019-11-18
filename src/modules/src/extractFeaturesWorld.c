@@ -2,34 +2,33 @@
  * File: extractFeaturesWorld.c
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 /* Include Files */
-#include "../modules/src/extractFeaturesWorld.h"
-
-#include "../modules/src/abs.h"
-#include "../modules/src/abscissas2endPoints.h"
-#include "../modules/src/batchSplitFit.h"
-#include "../modules/src/CyclicBuffer_addPos.h"
-#include "../modules/src/CyclicBuffer_addPos_rtwutil.h"
-#include "../modules/src/CyclicBuffer_addProx.h"
-#include "../modules/src/diff.h"
-#include "../modules/src/epNom2epNew.h"
-#include "../modules/src/initCyclicBuffer.h"
-#include "../modules/src/initSlam.h"
-#include "../modules/src/mean.h"
-#include "../modules/src/mldivide.h"
-#include "../modules/src/mtlb_power.h"
-#include "../modules/src/projAbscissas2World.h"
-#include "../modules/src/projRhoPhiAlpha2World.h"
-#include "../modules/src/rt_nonfinite.h"
-#include "../modules/src/sign.h"
-#include "../modules/src/slamOnVehicle.h"
-#include "../modules/src/sqrt.h"
-#include "../modules/src/stepBetweenSync.h"
-#include "../modules/src/sum.h"
-#include "../modules/src/upSampAndFilt_AttPos.h"
+#include "rt_nonfinite.h"
+#include "CyclicBuffer_addPos.h"
+#include "CyclicBuffer_addProx.h"
+#include "initCyclicBuffer.h"
+#include "initSlam.h"
+#include "slamOnVehicle.h"
+#include "stepBetweenSync.h"
+#include "upSampAndFilt_AttPos.h"
+#include "extractFeaturesWorld.h"
+#include "sqrt.h"
+#include "sum.h"
+#include "mtlb_power.h"
+#include "diff.h"
+#include "abs.h"
+#include "sign.h"
+#include "mldivide.h"
+#include "mean.h"
+#include "epNom2epNew.h"
+#include "abscissas2endPoints.h"
+#include "projAbscissas2World.h"
+#include "projRhoPhiAlpha2World.h"
+#include "batchSplitFit.h"
+#include "CyclicBuffer_addPos_rtwutil.h"
 
 /* Function Definitions */
 
@@ -150,7 +149,7 @@ double extractFeaturesWorld(Raw_type Raw[20], const double RobPoseFreeze[3],
       }
 
       c_diff(b_covRhoPhi_r, dv25);
-      c_power(dv25, dv26);
+      c_mtlb_power(dv25, dv26);
       d8 = sum(dv26);
       b_sqrt(&d8);
       if (d8 > lngVal) {
@@ -163,7 +162,7 @@ double extractFeaturesWorld(Raw_type Raw[20], const double RobPoseFreeze[3],
         }
 
         c_diff(b_covRhoPhi_r, dv27);
-        c_power(dv27, dv28);
+        c_mtlb_power(dv27, dv28);
         lngVal = sum(dv28);
         b_sqrt(&lngVal);
       }

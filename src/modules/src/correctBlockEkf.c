@@ -2,20 +2,19 @@
  * File: correctBlockEkf.c
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 /* Include Files */
-#include "../modules/src/correctBlockEkf.h"
-
-#include "../modules/src/CyclicBuffer_addPos.h"
-#include "../modules/src/CyclicBuffer_addProx.h"
-#include "../modules/src/initCyclicBuffer.h"
-#include "../modules/src/initSlam.h"
-#include "../modules/src/rt_nonfinite.h"
-#include "../modules/src/slamOnVehicle.h"
-#include "../modules/src/stepBetweenSync.h"
-#include "../modules/src/upSampAndFilt_AttPos.h"
+#include "rt_nonfinite.h"
+#include "CyclicBuffer_addPos.h"
+#include "CyclicBuffer_addProx.h"
+#include "initCyclicBuffer.h"
+#include "initSlam.h"
+#include "slamOnVehicle.h"
+#include "stepBetweenSync.h"
+#include "upSampAndFilt_AttPos.h"
+#include "correctBlockEkf.h"
 
 /* Function Definitions */
 
@@ -35,9 +34,9 @@ void correctBlockEkf(Map_type *Map, const double b_r[5], const double H[10],
   int ii;
   double kk;
   double K_[66];
-  short usedInd[33];
+  int i;
   int i29;
-  int jj;
+  signed char usedInd[33];
   double HinZ[10];
   int indI;
   double dv31[5];
@@ -64,12 +63,15 @@ void correctBlockEkf(Map_type *Map, const double b_r[5], const double H[10],
   /*  K = Map.P(Map.used,r) * H' * Inn.iZ;   % K = PH'Z^-1 */
   /*  TODO: use smart size initialization and not hardcoded sizes. */
   memset(&K_[0], 0, 66U * sizeof(double));
-  memset(&usedInd[0], 0, 33U * sizeof(short));
+  for (i = 0; i < 33; i++) {
+    usedInd[i] = 0;
+  }
+
   for (i29 = 0; i29 < 5; i29++) {
-    for (jj = 0; jj < 2; jj++) {
-      HinZ[i29 + 5 * jj] = 0.0;
+    for (i = 0; i < 2; i++) {
+      HinZ[i29 + 5 * i] = 0.0;
       for (indI = 0; indI < 2; indI++) {
-        HinZ[i29 + 5 * jj] += H[indI + (i29 << 1)] * Inn_iZ[indI + (jj << 1)];
+        HinZ[i29 + 5 * i] += H[indI + (i29 << 1)] * Inn_iZ[indI + (i << 1)];
       }
     }
   }
@@ -79,18 +81,18 @@ void correctBlockEkf(Map_type *Map, const double b_r[5], const double H[10],
     if (Map->used[ii]) {
       kk++;
       for (i29 = 0; i29 < 5; i29++) {
-        dv31[i29] = 0.5 * (Map->P[((int)b_r[i29] + 303 * ii) - 1] + Map->P[ii +
-                           303 * ((int)b_r[i29] - 1)]);
+        dv31[i29] = 0.5 * (Map->P[((int)b_r[i29] + 33 * ii) - 1] + Map->P[ii +
+                           33 * ((int)b_r[i29] - 1)]);
       }
 
       for (i29 = 0; i29 < 2; i29++) {
         K_[((int)kk + 33 * i29) - 1] = 0.0;
-        for (jj = 0; jj < 5; jj++) {
-          K_[((int)kk + 33 * i29) - 1] += dv31[jj] * HinZ[jj + 5 * i29];
+        for (i = 0; i < 5; i++) {
+          K_[((int)kk + 33 * i29) - 1] += dv31[i] * HinZ[i + 5 * i29];
         }
       }
 
-      usedInd[(int)kk - 1] = (short)(ii + 1);
+      usedInd[(int)kk - 1] = (signed char)(ii + 1);
     }
 
     ii++;
@@ -116,16 +118,16 @@ void correctBlockEkf(Map_type *Map, const double b_r[5], const double H[10],
     }
 
     Map->x[usedInd[ii] - 1] += tmp;
-    for (jj = 0; jj <= ii; jj++) {
-      tmp = K_[jj] * (K_[ii] * Inn_Z[0] + K_[33 + ii] * Z12) + K_[33 + jj] *
+    for (i = 0; i <= ii; i++) {
+      tmp = K_[i] * (K_[ii] * Inn_Z[0] + K_[33 + ii] * Z12) + K_[33 + i] *
         (K_[ii] * Z12 + K_[33 + ii] * Inn_Z[3]);
-      if (1.0 + (double)jj < 1.0 + (double)ii) {
-        Map->P[indI + 303 * (usedInd[jj] - 1)] = 0.5 * (Map->P[indI + 303 *
-          (usedInd[jj] - 1)] + Map->P[(usedInd[jj] + 303 * indI) - 1]) - tmp;
-        Map->P[(usedInd[jj] + 303 * indI) - 1] = Map->P[indI + 303 * (usedInd[jj]
-          - 1)];
+      if (1.0 + (double)i < 1.0 + (double)ii) {
+        Map->P[indI + 33 * (usedInd[i] - 1)] = 0.5 * (Map->P[indI + 33 *
+          (usedInd[i] - 1)] + Map->P[(usedInd[i] + 33 * indI) - 1]) - tmp;
+        Map->P[(usedInd[i] + 33 * indI) - 1] = Map->P[indI + 33 * (usedInd[i] -
+          1)];
       } else {
-        Map->P[indI + 303 * indI] -= tmp;
+        Map->P[indI + 33 * indI] -= tmp;
       }
     }
   }

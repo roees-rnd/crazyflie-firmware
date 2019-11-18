@@ -2,18 +2,17 @@
  * File: rt_nonfinite.h
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 #ifndef RT_NONFINITE_H
 #define RT_NONFINITE_H
-
 #if defined(_MSC_VER) && (_MSC_VER <= 1200)
 #include <float.h>
 #endif
 
 #include <stddef.h>
-#include "../modules/src/rtwtypes.h"
+#include "rtwtypes.h"
 
 extern real_T rtInf;
 extern real_T rtMinusInf;

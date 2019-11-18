@@ -2,7 +2,7 @@
  * File: rt_nonfinite.c
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 /*
@@ -10,10 +10,9 @@
  *      MATLAB for code generation function to initialize non-finites,
  *      (Inf, NaN and -Inf).
  */
-#include "../modules/src/rt_nonfinite.h"
-
-#include "../modules/src/rtGetInf.h"
-#include "../modules/src/rtGetNaN.h"
+#include "rt_nonfinite.h"
+#include "rtGetNaN.h"
+#include "rtGetInf.h"
 
 real_T rtInf;
 real_T rtMinusInf;

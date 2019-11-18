@@ -2,14 +2,14 @@
  * File: CyclicBuffer_addPos_types.h
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 #ifndef CYCLICBUFFER_ADDPOS_TYPES_H
 #define CYCLICBUFFER_ADDPOS_TYPES_H
 
 /* Include Files */
-#include "../modules/src/rtwtypes.h"
+#include "rtwtypes.h"
 
 /* Type Definitions */
 #ifndef typedef_LmkParEndp_type
@@ -55,9 +55,9 @@ typedef struct {
 #define typedef_Map_type
 
 typedef struct {
-  boolean_T used[303];
-  double x[303];
-  double P[91809];
+  boolean_T used[33];
+  double x[33];
+  double P[1089];
   double len;
   double numUsed;
   double lmk0;
@@ -376,21 +376,6 @@ typedef struct {
 #define typedef_struct0_T
 
 typedef struct {
-  boolean_T used[33];
-  double x[33];
-  double P[1089];
-  double len;
-  double numUsed;
-  double lmk0;
-  double lastChecked;
-} struct0_T;
-
-#endif                                 /*typedef_struct0_T*/
-
-#ifndef typedef_struct1_T
-#define typedef_struct1_T
-
-typedef struct {
   boolean_T Raw_faultyMeas;
   short Raw_xyRob_1[2];
   short Raw_xyRob_pnum[2];
@@ -405,9 +390,9 @@ typedef struct {
   double slamVersion;
   double dPosFault;
   boolean_T updateCU;
-} struct1_T;
+} struct0_T;
 
-#endif                                 /*typedef_struct1_T*/
+#endif                                 /*typedef_struct0_T*/
 
 #ifndef typedef_xyBuff_type
 #define typedef_xyBuff_type

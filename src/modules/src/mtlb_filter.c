@@ -1,22 +1,20 @@
 /*
- * File: filter.c
+ * File: mtlb_filter.c
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 /* Include Files */
 #include "rt_nonfinite.h"
-#include "../modules/src/mtlb_filter.h"
-
-#include "../modules/src/CyclicBuffer_addPos.h"
-#include "../modules/src/CyclicBuffer_addProx.h"
-#include "../modules/src/initCyclicBuffer.h"
-#include "../modules/src/initSlam.h"
-#include "../modules/src/rt_nonfinite.h"
-#include "../modules/src/slamOnVehicle.h"
-#include "../modules/src/stepBetweenSync.h"
-#include "../modules/src/upSampAndFilt_AttPos.h"
+#include "CyclicBuffer_addPos.h"
+#include "CyclicBuffer_addProx.h"
+#include "initCyclicBuffer.h"
+#include "initSlam.h"
+#include "slamOnVehicle.h"
+#include "stepBetweenSync.h"
+#include "upSampAndFilt_AttPos.h"
+#include "mtlb_filter.h"
 
 /* Function Definitions */
 
@@ -46,7 +44,7 @@ void mtlb_filter(double b[11], const double b_x[124], const double zi[10], doubl
 }
 
 /*
- * File trailer for filter.c
+ * File trailer for mtlb_filter.c
  *
  * [EOF]
  */

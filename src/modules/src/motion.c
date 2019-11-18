@@ -2,21 +2,20 @@
  * File: motion.c
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 /* Include Files */
-#include "../modules/src/motion.h"
-
-#include "../modules/src/CyclicBuffer_addPos.h"
-#include "../modules/src/CyclicBuffer_addProx.h"
-#include "../modules/src/initCyclicBuffer.h"
-#include "../modules/src/initSlam.h"
-#include "../modules/src/predictBlockEkf.h"
-#include "../modules/src/rt_nonfinite.h"
-#include "../modules/src/slamOnVehicle.h"
-#include "../modules/src/stepBetweenSync.h"
-#include "../modules/src/upSampAndFilt_AttPos.h"
+#include "rt_nonfinite.h"
+#include "CyclicBuffer_addPos.h"
+#include "CyclicBuffer_addProx.h"
+#include "initCyclicBuffer.h"
+#include "initSlam.h"
+#include "slamOnVehicle.h"
+#include "stepBetweenSync.h"
+#include "upSampAndFilt_AttPos.h"
+#include "motion.h"
+#include "predictBlockEkf.h"
 
 /* Function Definitions */
 
@@ -80,7 +79,7 @@ void motion(Map_type *Map, Rob_type *Rob)
   /*  covariances */
   for (i21 = 0; i21 < 3; i21++) {
     for (i = 0; i < 3; i++) {
-      b_Map[i + 3 * i21] = Map->P[((int)Rob->state.r[i] + 303 * ((int)
+      b_Map[i + 3 * i21] = Map->P[((int)Rob->state.r[i] + 33 * ((int)
         Rob->state.r[i21] - 1)) - 1];
     }
   }
@@ -196,8 +195,8 @@ void motion(Map_type *Map, Rob_type *Rob)
   /*   update Rob  - copy from Map */
   for (i21 = 0; i21 < 3; i21++) {
     for (i = 0; i < 3; i++) {
-      b_Map[i + 3 * i21] = Map->P[((int)r11.r[i] + 303 * ((int)r11.r[i21] - 1))
-        - 1];
+      b_Map[i + 3 * i21] = Map->P[((int)r11.r[i] + 33 * ((int)r11.r[i21] - 1)) -
+        1];
       Rob->state.P[i + 3 * i21] = b_Map[i + 3 * i21];
     }
   }

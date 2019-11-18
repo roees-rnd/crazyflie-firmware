@@ -2,14 +2,14 @@
  * File: CyclicBuffer_addPsi_types.h
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:26:10
+ * C/C++ source code generated on  : 18-Nov-2019 16:30:18
  */
 
 #ifndef CYCLICBUFFER_ADDPSI_TYPES_H
 #define CYCLICBUFFER_ADDPSI_TYPES_H
 
 /* Include Files */
-#include "../modules/src/rtwtypes.h"
+#include "rtwtypes.h"
 
 /* Type Definitions */
 #ifndef typedef_OptSync_type

@@ -2,21 +2,20 @@
  * File: getMetry.c
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 /* Include Files */
-#include "../modules/src/getMetry.h"
-
-#include "../modules/src/CyclicBuffer_addPos.h"
-#include "../modules/src/CyclicBuffer_addPos_rtwutil.h"
-#include "../modules/src/CyclicBuffer_addProx.h"
-#include "../modules/src/initCyclicBuffer.h"
-#include "../modules/src/initSlam.h"
-#include "../modules/src/rt_nonfinite.h"
-#include "../modules/src/slamOnVehicle.h"
-#include "../modules/src/stepBetweenSync.h"
-#include "../modules/src/upSampAndFilt_AttPos.h"
+#include "rt_nonfinite.h"
+#include "CyclicBuffer_addPos.h"
+#include "CyclicBuffer_addProx.h"
+#include "initCyclicBuffer.h"
+#include "initSlam.h"
+#include "slamOnVehicle.h"
+#include "stepBetweenSync.h"
+#include "upSampAndFilt_AttPos.h"
+#include "getMetry.h"
+#include "CyclicBuffer_addPos_rtwutil.h"
 
 /* Variable Definitions */
 static double indLmk;
@@ -32,12 +31,12 @@ static double indLmk;
  *                double pnum
  *                double b_dPosFault
  *                double b_oneOfTenCyc
- *                struct1_T *Metry
+ *                struct0_T *Metry
  * Return Type  : void
  */
 void getMetry(double Map_numUsed, const double xyRob[400], const Lmk_type Lmk[15],
               const Raw_type Raw[20], double num_segments, double pnum, double
-              b_dPosFault, double b_oneOfTenCyc, struct1_T *Metry)
+              b_dPosFault, double b_oneOfTenCyc, struct0_T *Metry)
 {
   int ix;
   int i;
@@ -252,7 +251,7 @@ void getMetry(double Map_numUsed, const double xyRob[400], const Lmk_type Lmk[15
     Metry->Raw_EndpW3[i] = ix;
   }
 
-  Metry->slamVersion = 1911131524;
+  Metry->slamVersion = 1911181629;
   Metry->dPosFault = b_dPosFault;
   Metry->updateCU = (b_oneOfTenCyc == 0.0);
 

@@ -2,7 +2,7 @@
  * File: getMetry.h
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 #ifndef GETMETRY_H
@@ -13,11 +13,10 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "../modules/src/CyclicBuffer_addPos_types.h"
-#include "../modules/src/rt_defines.h"
-#include "../modules/src/rt_nonfinite.h"
-#include "../modules/src/rtwtypes.h"
+#include "rt_defines.h"
+#include "rt_nonfinite.h"
+#include "rtwtypes.h"
+#include "CyclicBuffer_addPos_types.h"
 
 /* Function Declarations */
 #ifdef __cplusplus
@@ -29,7 +28,7 @@ extern "C" {
   extern void getMetry(double Map_numUsed, const double xyRob[400], const
                        Lmk_type Lmk[15], const Raw_type Raw[20], double
                        num_segments, double pnum, double b_dPosFault, double
-                       b_oneOfTenCyc, struct1_T *Metry);
+                       b_oneOfTenCyc, struct0_T *Metry);
   extern void getMetry_init(void);
 
 #ifdef __cplusplus

@@ -2,31 +2,30 @@
  * File: slamOnVehicle.c
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 /* Include Files */
-#include "../modules/src/slamOnVehicle.h"
-
-#include "../modules/src/correctKnownLmksExperiment.h"
-#include "../modules/src/CyclicBuffer_addPos.h"
-#include "../modules/src/CyclicBuffer_addPos_data.h"
-#include "../modules/src/CyclicBuffer_addPos_rtwutil.h"
-#include "../modules/src/CyclicBuffer_addProx.h"
-#include "../modules/src/diff.h"
-#include "../modules/src/extractFeaturesWorld.h"
-#include "../modules/src/getMetry.h"
-#include "../modules/src/initCyclicBuffer.h"
-#include "../modules/src/initNewLmkExperiment.h"
-#include "../modules/src/initSlam.h"
-#include "../modules/src/motion.h"
-#include "../modules/src/norm.h"
-#include "../modules/src/processSlamInput.h"
-#include "../modules/src/refreshMapCntlUnit.h"
-#include "../modules/src/retroProjXYFromRangeSenOnRob.h"
-#include "../modules/src/rt_nonfinite.h"
-#include "../modules/src/stepBetweenSync.h"
-#include "../modules/src/upSampAndFilt_AttPos.h"
+#include "rt_nonfinite.h"
+#include "CyclicBuffer_addPos.h"
+#include "CyclicBuffer_addProx.h"
+#include "initCyclicBuffer.h"
+#include "initSlam.h"
+#include "slamOnVehicle.h"
+#include "stepBetweenSync.h"
+#include "upSampAndFilt_AttPos.h"
+#include "initNewLmkExperiment.h"
+#include "norm.h"
+#include "diff.h"
+#include "correctKnownLmksExperiment.h"
+#include "refreshMapCntlUnit.h"
+#include "getMetry.h"
+#include "extractFeaturesWorld.h"
+#include "retroProjXYFromRangeSenOnRob.h"
+#include "motion.h"
+#include "processSlamInput.h"
+#include "CyclicBuffer_addPos_rtwutil.h"
+#include "CyclicBuffer_addPos_data.h"
 
 /* Variable Definitions */
 static boolean_T FirstRun_not_empty;
@@ -73,7 +72,7 @@ void FirstRun_not_empty_init(void)
  *                double LmkIds[20]
  *                double LmkEndps[80]
  *                double LmkActions[20]
- *                struct1_T *Metry
+ *                struct0_T *Metry
  * Return Type  : void
  */
 void slamOnVehicle(double RobTT, const double RobXYT[3], const double RobCov[9],
@@ -82,7 +81,7 @@ void slamOnVehicle(double RobTT, const double RobXYT[3], const double RobCov[9],
                    Opt_type *Opt, Raw_type Raw[20], double xyRob[400], double
                    *pnum, boolean_T *LowFreqCycle, double RobPoseUpd[3], double
                    RobCovUpd[9], double LmkIds[20], double LmkEndps[80], double
-                   LmkActions[20], struct1_T *Metry)
+                   LmkActions[20], struct0_T *Metry)
 {
   int i19;
   double b_prox[16];

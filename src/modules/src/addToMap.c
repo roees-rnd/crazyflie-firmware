@@ -2,20 +2,19 @@
  * File: addToMap.c
  *
  * MATLAB Coder version            : 3.4
- * C/C++ source code generated on  : 13-Nov-2019 15:25:03
+ * C/C++ source code generated on  : 18-Nov-2019 16:29:35
  */
 
 /* Include Files */
-#include "../modules/src/addToMap.h"
-
-#include "../modules/src/CyclicBuffer_addPos.h"
-#include "../modules/src/CyclicBuffer_addProx.h"
-#include "../modules/src/initCyclicBuffer.h"
-#include "../modules/src/initSlam.h"
-#include "../modules/src/rt_nonfinite.h"
-#include "../modules/src/slamOnVehicle.h"
-#include "../modules/src/stepBetweenSync.h"
-#include "../modules/src/upSampAndFilt_AttPos.h"
+#include "rt_nonfinite.h"
+#include "CyclicBuffer_addPos.h"
+#include "CyclicBuffer_addProx.h"
+#include "initCyclicBuffer.h"
+#include "initSlam.h"
+#include "slamOnVehicle.h"
+#include "stepBetweenSync.h"
+#include "upSampAndFilt_AttPos.h"
+#include "addToMap.h"
 
 /* Function Definitions */
 
@@ -76,16 +75,16 @@ void addToMap(Map_type *Map, const double L[2], const double P_LL[4], const
   for (i = 0; i < 2; i++) {
     Map->x[(int)b_r[i] - 1] = L[i];
     for (jj = 0; jj < 2; jj++) {
-      Map->P[((int)b_r[jj] + 303 * ((int)b_r[i] - 1)) - 1] = P_LL[jj + (i << 1)];
+      Map->P[((int)b_r[jj] + 33 * ((int)b_r[i] - 1)) - 1] = P_LL[jj + (i << 1)];
     }
   }
 
   for (i = 0; i < 2; i++) {
     indI = b_r[i];
     for (jj = 0; jj < (int)usedNum; jj++) {
-      Map->P[((int)indI + 303 * ((int)usedInd[jj] - 1)) - 1] = P_LX[i + (jj << 1)];
-      Map->P[((int)usedInd[jj] + 303 * ((int)indI - 1)) - 1] = Map->P[((int)indI
-        + 303 * ((int)usedInd[jj] - 1)) - 1];
+      Map->P[((int)indI + 33 * ((int)usedInd[jj] - 1)) - 1] = P_LX[i + (jj << 1)];
+      Map->P[((int)usedInd[jj] + 33 * ((int)indI - 1)) - 1] = Map->P[((int)indI
+        + 33 * ((int)usedInd[jj] - 1)) - 1];
     }
 
     Map->used[(int)b_r[i] - 1] = true;
