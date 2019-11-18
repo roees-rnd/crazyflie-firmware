@@ -34,7 +34,7 @@
 #include "app.h"
 
 #ifndef APP_STACKSIZE
-#define APP_STACKSIZE 500
+#define APP_STACKSIZE 1000
 #endif
 
 #ifndef APP_PRIORITY
@@ -74,44 +74,42 @@ static FIL fid_usafap_outs;
 static FIL fid_sov_outs;
 static FIL fid_timing;
 
-
-
-// initSlam inputs:
-static TCHAR setupType[7];
-static Map_type Map;
-static Rob_type Rob;
-static Sen_type Sen[17];
-static Lmk_type Lmk[15];
-static Obs_type Obs[15];
-static Opt_type Opt;
-static Raw_type Raw[20];
-static double xyRob[400];
-static double pnum;
-static double xyIn[2];
-
-//upSampAndFilt_AttPos outputs:
-static boolean_T shortTimeStep;
-static double highFreqTimeGrid[64];
-static double wantedSyncTime_T0;
-static double wantedSyncTime_T1;
-static double xUpSamp_f[64];
-static double yUpSamp_f[64];
-static double attUpSamp_f[64];
-
-// stepBetweenSync outputs:
-static boolean_T done;
-static double RobTT;
-static double RobXYT[3];
-static double RobCov[9];
-static Prox_type prox;
-
-// Synchronization buffers and configuration options:
-static psiBuff_type psiBuff;
-static xyBuff_type xyBuff;
-static proxBuff_type proxBuff[16];
-static OptSync_type OptSync;
-
-
+//
+//
+//// initSlam inputs:
+//static TCHAR setupType[7];
+//static Map_type Map;
+//static Rob_type Rob;
+//static Sen_type Sen[17];
+//static Lmk_type Lmk[15];
+//static Obs_type Obs[15];
+//static Opt_type Opt;
+//static Raw_type Raw[20];
+//static double xyRob[400];
+//static double pnum;
+//static double xyIn[2];
+//
+////upSampAndFilt_AttPos outputs:
+//static boolean_T shortTimeStep;
+//static double highFreqTimeGrid[64];
+//static double wantedSyncTime_T0;
+//static double wantedSyncTime_T1;
+//static double xUpSamp_f[64];
+//static double yUpSamp_f[64];
+//static double attUpSamp_f[64];
+//
+//// stepBetweenSync outputs:
+//static boolean_T done;
+//static double RobTT;
+//static double RobXYT[3];
+//static double RobCov[9];
+//static Prox_type prox;
+//
+//// Synchronization buffers and configuration options:
+//static psiBuff_type psiBuff;
+//static xyBuff_type xyBuff;
+//static proxBuff_type proxBuff[16];
+//static OptSync_type OptSync;
 
 #include "cfassert.h"
 #include "sleepus.h"
@@ -160,6 +158,41 @@ void appMain()
     TCHAR * tmpAgrIn6;
     const char sep[2] = ",";
 
+    // initSlam inputs:
+    TCHAR setupType[7];
+    Map_type Map;
+    Rob_type Rob;
+    Sen_type Sen[17];
+    Lmk_type Lmk[15];
+    Obs_type Obs[15];
+    Opt_type Opt;
+    Raw_type Raw[20];
+    double xyRob[400];
+    double pnum;
+    double xyIn[2];
+
+    //upSampAndFilt_AttPos outputs:
+    boolean_T shortTimeStep;
+    double highFreqTimeGrid[64];
+    double wantedSyncTime_T0;
+    double wantedSyncTime_T1;
+    double xUpSamp_f[64];
+    double yUpSamp_f[64];
+    double attUpSamp_f[64];
+
+    // stepBetweenSync outputs:
+    boolean_T done;
+    double RobTT;
+    double RobXYT[3];
+    double RobCov[9];
+    Prox_type prox;
+
+    // Synchronization buffers and configuration options:
+    psiBuff_type psiBuff;
+    xyBuff_type xyBuff;
+    proxBuff_type proxBuff[16];
+    OptSync_type OptSync;
+
 
     // slamOnVehicle outputs:
     boolean_T LowFreqCycle;
@@ -174,8 +207,8 @@ void appMain()
     uint64_t end_time;
 
     // Call initialization functions:
-//    initSlam(setupType, &Map, &Rob,Sen,  Lmk,  Obs,  &Opt, Raw, xyRob, &pnum);
-//    initCyclicBuffer(&psiBuff, &xyBuff, proxBuff, &OptSync);
+    initSlam(setupType, &Map, &Rob,Sen,  Lmk,  Obs,  &Opt, Raw, xyRob, &pnum);
+    initCyclicBuffer(&psiBuff, &xyBuff, proxBuff, &OptSync);
 
 
 //    // Load initial Position and update states:
