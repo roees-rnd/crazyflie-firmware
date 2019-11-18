@@ -131,10 +131,10 @@ VPATH += $(CRAZYFLIE_BASE)/src/init $(CRAZYFLIE_BASE)/src/hal/src $(CRAZYFLIE_BA
 
 # Init
 PROJ_OBJ += main.o
-# PROJ_OBJ += abs.o abscissas2endPoints.o addToMap.o batchSplitFit.o correctBlockEkf.o correctKnownLmksExperiment.o createLandmarks.o createObservations.o CyclicBuffer_addPos.o CyclicBuffer_addPos_data.o CyclicBuffer_addPos_initialize.o CyclicBuffer_addPos_rtwutil.o
-# PROJ_OBJ += CyclicBuffer_addPos_terminate.o CyclicBuffer_addProx.o CyclicBuffer_addPsi.o CyclicBuffer_addPsi_initialize.o CyclicBuffer_addPsi_terminate.o det.o diff.o epNom2epNew.o extractFeaturesWorld.o mtlb_filter.o filtfilt.o getMaxPenDist.o getMetry.o initCyclicBuffer.o
-# PROJ_OBJ += initNewLmkExperiment.o initRobots.o initSlam.o interp1.o lp2d.o matchFeatureExperiment.o mean.o mldivide.o mod1.o mod.o motion.o newLmk.o norm.o mtlb_power.o predictBlockEkf.o processSlamInput.o projAbscissas2World.o projectLmk.o projHorEndPntsToHorLin.o projRhoPhiAlpha2World.o
-# PROJ_OBJ += propagateUncertainty.o refreshMapCntlUnit.o retroProjXYFromRangeSenOnRob.o rtGetInf.o rtGetNaN.o rt_nonfinite.o SaM.o sign.o slamOnVehicle.o sort1.o sortIdx.o sqrt.o stepBetweenSync.o sum.o upSampAndFilt_AttPos.o
+PROJ_OBJ += abs.o abscissas2endPoints.o addToMap.o batchSplitFit.o correctBlockEkf.o correctKnownLmksExperiment.o createLandmarks.o createObservations.o CyclicBuffer_addPos.o CyclicBuffer_addPos_data.o CyclicBuffer_addPos_initialize.o CyclicBuffer_addPos_rtwutil.o
+PROJ_OBJ += CyclicBuffer_addPos_terminate.o CyclicBuffer_addProx.o CyclicBuffer_addPsi.o CyclicBuffer_addPsi_initialize.o CyclicBuffer_addPsi_terminate.o det.o diff.o epNom2epNew.o extractFeaturesWorld.o mtlb_filter.o filtfilt.o getMaxPenDist.o getMetry.o initCyclicBuffer.o
+PROJ_OBJ += initNewLmkExperiment.o initRobots.o initSlam.o interp1.o lp2d.o matchFeatureExperiment.o mean.o mldivide.o mod1.o mod.o motion.o newLmk.o norm.o mtlb_power.o predictBlockEkf.o processSlamInput.o projAbscissas2World.o projectLmk.o projHorEndPntsToHorLin.o projRhoPhiAlpha2World.o
+PROJ_OBJ += propagateUncertainty.o refreshMapCntlUnit.o retroProjXYFromRangeSenOnRob.o rtGetInf.o rtGetNaN.o rt_nonfinite.o SaM.o sign.o slamOnVehicle.o sort1.o sortIdx.o sqrt.o stepBetweenSync.o sum.o upSampAndFilt_AttPos.o
 
 PROJ_OBJ += platform.o platform_utils.o platform_$(PLATFORM).o platform_$(CPU).o
 
@@ -297,7 +297,7 @@ ifeq ($(DEBUG), 1)
   CFLAGS += -Wconversion
 else
 	# Fail on warnings
-  CFLAGS += -Os -g3 -Werror
+  CFLAGS += -Os -g3 # -Werror DBDB ROEE
 endif
 
 ifeq ($(LTO), 1)
